@@ -1,11 +1,12 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
 import axios from "axios"
+import { BASE_URL } from "../../../BASE_URL"
 
 export const fetchPosts = createAsyncThunk(
   "posts/fetchPosts",
   async (_, { rejectWithValue }) => {
     try {
-      const response = await axios.get(`http://localhost:3000`)
+      const response = await axios.get(BASE_URL)
       return response.data
     } catch (error) {
       return rejectWithValue(error.response.data)
@@ -17,7 +18,7 @@ export const fetchUserPosts = createAsyncThunk(
   "posts/fetchUserPosts",
   async ({ id }, { rejectWithValue }) => {
     try {
-      const response = await axios.get(`http://localhost:3000/posts/${id}`)
+      const response = await axios.get(`${BASE_URL}/posts/${id}`)
       return response.data
     } catch (error) {
       return rejectWithValue(error.response.data)
@@ -30,7 +31,7 @@ export const likePost = createAsyncThunk(
   async ({ postId, id, token }, { rejectWithValue }) => {
     try {
       await axios.post(
-        `http://localhost:3000/like/${postId}`,
+        `${BASE_URL}/like/${postId}`,
         {},
         {
           headers: {
@@ -51,7 +52,7 @@ export const unlikePost = createAsyncThunk(
   async ({ postId, id, token }, { rejectWithValue }) => {
     try {
       await axios.post(
-        `http://localhost:3000/unlike/${postId}/`,
+        `${BASE_URL}/unlike/${postId}/`,
         {},
         {
           headers: {

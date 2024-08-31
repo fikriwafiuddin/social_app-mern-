@@ -1,6 +1,7 @@
 import axios from "axios"
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
+import { BASE_URL } from "../../BASE_URL"
 
 function Register() {
   const [email, setEmail] = useState("")
@@ -13,7 +14,7 @@ function Register() {
   const handleRegister = (e) => {
     e.preventDefault()
     axios
-      .post("http://localhost:3000/register", {
+      .post(`${BASE_URL}/register`, {
         email,
         username,
         password,

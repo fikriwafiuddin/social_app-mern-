@@ -7,6 +7,7 @@ import { fetchMe } from "../redux/slices/userSlice"
 import { useDispatch, useSelector } from "react-redux"
 import { likePost, unlikePost } from "../redux/slices/postSlice"
 import { Comment, LikeFill, LikeOutline } from "../atoms/svg"
+import { BASE_URL } from "../../BASE_URL"
 
 function Post() {
   const [post, setPost] = useState()
@@ -26,9 +27,7 @@ function Post() {
   useEffect(() => {
     const getPost = async () => {
       try {
-        const response = await axios.get(
-          `http://localhost:3000/detailPost/${id}`
-        )
+        const response = await axios.get(`${BASE_URL}/detailPost/${id}`)
         setPost(response.data)
       } catch (error) {
         console.log(error)
@@ -45,8 +44,8 @@ function Post() {
     e.preventDefault()
     try {
       setCommentIsLoading(true)
-      const response = axios.post(
-        `http://localhost:3000/eddComment/:${post._id}`,
+      const response = await axios.post(
+        `${BASE_URL}/eddComment/${post._id}`,
         { comment },
         {
           headers: {
@@ -54,10 +53,7 @@ function Post() {
           },
         }
       )
-      // setPost((prevPost) => ({
-      //   ...prevPost,
-      //   comments: [...(prevPost.comments || []), response.data],
-      // }))
+      setPost(response.data)
     } catch (error) {
       console.log(error)
     } finally {

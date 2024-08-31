@@ -2,13 +2,14 @@ import express from "express"
 import route from "./router.js"
 import connectDb from "./utils/db.js"
 import cors from "cors"
+import "dotenv/config"
 
 const app = express()
-const port = 3000
+const port = process.env.PORT
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
-app.use(cors({ credentials: true, origin: "http://localhost:5173" }))
+app.use(cors())
 connectDb()
 app.use(route)
 

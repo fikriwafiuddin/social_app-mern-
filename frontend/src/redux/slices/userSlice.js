@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
 import axios from "axios"
+import { BASE_URL } from "../../../BASE_URL"
 
 const token = localStorage.getItem("user")
 
@@ -7,7 +8,7 @@ export const fetchMe = createAsyncThunk(
   "user/fetchMe",
   async (token, { rejectWithValue }) => {
     try {
-      const response = await axios.get(`http://localhost:3000/getMe`, {
+      const response = await axios.get(`${BASE_URL}/getMe`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -23,7 +24,7 @@ export const fetchUser = createAsyncThunk(
   "user/fetchUser",
   async (username, { rejectWithValue }) => {
     try {
-      const response = await axios.get(`http://localhost:3000/user/${username}`)
+      const response = await axios.get(`${BASE_URL}/user/${username}`)
 
       return response.data
     } catch (error) {
@@ -37,7 +38,7 @@ export const follow = createAsyncThunk(
   async ({ id }, { rejectWithValue }) => {
     try {
       const response = await axios.post(
-        `http://localhost:3000/follow/${id}/`,
+        `${BASE_URL}/follow/${id}/`,
         {},
         {
           headers: {
@@ -58,7 +59,7 @@ export const unfollow = createAsyncThunk(
   async ({ id }, { rejectWithValue }) => {
     try {
       const response = await axios.post(
-        `http://localhost:3000/unfollow/${id}/`,
+        `${BASE_URL}/unfollow/${id}/`,
         {},
         {
           headers: {

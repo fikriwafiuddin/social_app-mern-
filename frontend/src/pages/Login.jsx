@@ -1,6 +1,7 @@
 import axios from "axios"
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
+import { BASE_URL } from "../../BASE_URL"
 
 function Login() {
   const [email, setEmail] = useState("")
@@ -10,7 +11,7 @@ function Login() {
   const handleLogin = async (e) => {
     e.preventDefault()
     try {
-      const response = await axios.post("http://localhost:3000/login", {
+      const response = await axios.post(`${BASE_URL}/login`, {
         email,
         password,
       })

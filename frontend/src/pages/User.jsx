@@ -20,7 +20,6 @@ function User() {
   const navigate = useNavigate()
   const { username } = useParams()
   const token = localStorage.getItem("user")
-  console.log(user)
 
   useEffect(() => {
     dispatch(fetchMe(token))

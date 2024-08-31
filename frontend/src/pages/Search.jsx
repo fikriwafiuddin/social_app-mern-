@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import Navbar from "../components/Navbar"
 import axios from "axios"
+import { BASE_URL } from "../../BASE_URL"
 
 function Search() {
   const [query, setQuery] = useState("")
@@ -16,9 +17,7 @@ function Search() {
 
       setLoading(true)
       try {
-        const response = await axios.get(
-          `http://localhost:3000/searchUser?q=${query}`
-        )
+        const response = await axios.get(`${BASE_URL}/searchUser?q=${query}`)
         setUsers(response.data)
       } catch (error) {
         console.error(error)

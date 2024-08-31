@@ -1,9 +1,10 @@
 import jwt from "jsonwebtoken"
 import User from "../models/userModel.js"
 import bcrypt from "bcrypt"
+import "dotenv/config"
 
 const generateToken = (id) => {
-  return jwt.sign({ id }, "Secret Key", { expiresIn: "30d" })
+  return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: "30d" })
 }
 
 export const login = async (req, res) => {

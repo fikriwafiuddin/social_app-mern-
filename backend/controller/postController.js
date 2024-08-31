@@ -6,7 +6,7 @@ export const getPost = async (req, res) => {
   try {
     const posts = await Post.find().sort({ createdAt: -1 }).populate("author")
 
-    res.json(posts)
+    res.status(200).json(posts)
   } catch (error) {
     console.error(error)
   }

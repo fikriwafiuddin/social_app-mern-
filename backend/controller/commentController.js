@@ -1,23 +1,38 @@
-import BlogPost from "../models/postModel.js"
+import Comment from "../models/commentModel.js"
+import Post from "../models/postModel.js"
 
 export const addComment = async (req, res) => {
   const user = req.user
   const postId = req.params.postId
   const { comment } = req.body
+  console.log(comment)
   try {
-    const post = await BlogPost.findById(postId)
+    let post = await Post.findById(postId)
     if (!post) {
       return res.status(404).json("Post not found")
     }
 
-    const newComment = new Comment({ comment, author: user._id })
-    const response = await newComment.save()
+    const newComment = new Comment({
+      content: comment,
+      author: user._id,
+      blogPost: postId,
+    })
+    const savedComment = await newComment.save()
 
-    post.comments.push(newComment._id)
+    post.comments.push(savedComment._id)
     await post.save()
 
-    console.log(response)
-    res.status(200).json({ _id: response._id })
+    post = await Post.findById(postId)
+      .populate("author", "username")
+      .populate({
+        path: "comments",
+        populate: {
+          path: "author",
+          select: "username",
+        },
+      })
+
+    return res.status(200).json(post)
   } catch (error) {
     console.error(error)
     res.status(400).json("System error")
@@ -32,7 +47,7 @@ export const deleteComment = async (req, res) => {
       return res.status(404).send("Comment not found")
     }
 
-    const blogPost = await BlogPost.findById(comment.blogPost)
+    const blogPost = await Post.findById(comment.blogPost)
     if (blogPost) {
       const index = blogPost.comments.indexOf(commentId)
       if (index > -1) {
@@ -52,7 +67,7 @@ export const like = async (req, res) => {
   const user = req.user._id
   const slug = req.params.slug
   try {
-    const post = await BlogPost.findByOne({ slug })
+    const post = await Post.findByOne({ slug })
     if (!post) {
       return res.status(404).json("Post not found")
     }
@@ -70,7 +85,7 @@ export const dislike = async (req, res) => {
   const slug = req.params.slug
   const userId = req.body.userId
   try {
-    const blogPost = await BlogPost.findOne({ slug })
+    const blogPost = await Post.findOne({ slug })
 
     if (!blogPost) {
       return res.status(404).send("Blog post not found")
