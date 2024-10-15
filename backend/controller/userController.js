@@ -49,7 +49,9 @@ export const register = async (req, res) => {
       return res.status(400).json("Please add confirm password correctly")
     }
 
-    const newUser = new User({ username, name, email, password })
+    const decoded = bcrypt.hashSync(password, 10)
+
+    const newUser = new User({ username, name, email, password: decoded })
     await newUser.save()
     return res.status(200).json(generateToken(newUser._id))
   } catch (error) {
