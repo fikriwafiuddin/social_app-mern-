@@ -1,14 +1,8 @@
-import {
-  deletePost,
-  fetchUserPosts,
-  likePost,
-  unlikePost,
-} from "../redux/slices/postSlice"
+import { deletePost, likePost, unlikePost } from "../redux/slices/postSlice"
 import { useDispatch } from "react-redux"
 import PropTypes from "prop-types"
 import { Comment, LikeFill, LikeOutline } from "../atoms/svg"
 import { useState } from "react"
-import { useSelector } from "react-redux"
 
 function Posts({ posts, me, option }) {
   const [isOpen, setIsOpen] = useState(null)
