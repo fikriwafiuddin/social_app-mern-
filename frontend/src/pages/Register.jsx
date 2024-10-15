@@ -22,7 +22,7 @@ function Register() {
         password2,
       })
       .then((response) => {
-        localStorage.setItem(response.data)
+        localStorage.setItem("user", response.data)
         navigate("/")
       })
       .catch((error) => alert(error.response.data))

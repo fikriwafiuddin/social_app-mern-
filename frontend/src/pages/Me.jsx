@@ -11,6 +11,7 @@ function Me() {
   const dispatch = useDispatch()
   const { me, isLoading } = useSelector((state) => state.user)
   const {
+    message,
     posts,
     error,
     isLoading: postLoading,
@@ -31,7 +32,7 @@ function Me() {
     if (!isLoading) {
       dispatch(fetchUserPosts({ id: me._id }))
     }
-  }, [isLoading, dispatch, me])
+  }, [isLoading, dispatch, me, message])
 
   if (isLoading || !me) {
     return <Loading />
@@ -95,7 +96,7 @@ function Me() {
         {postLoading || isLoading ? (
           <Loading />
         ) : (
-          <Posts posts={posts} me={me} />
+          <Posts posts={posts} me={me} option={true} />
         )}
       </main>
     </>

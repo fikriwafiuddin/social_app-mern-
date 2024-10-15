@@ -62,10 +62,15 @@ export const createPost = async (req, res) => {
 
 export const deletePost = async (req, res) => {
   const id = req.params.id
+  const user = req.user
   try {
     const post = await Post.findById(id)
     if (!post) {
-      return res.status(404).json("Blog not found")
+      return res.status(404).json("Post not found")
+    }
+
+    if (!user._id.equals(post.author)) {
+      return res.status(403).json("No access")
     }
 
     await Post.deleteOne({ _id: id })

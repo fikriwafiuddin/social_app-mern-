@@ -68,12 +68,30 @@ export const unlikePost = createAsyncThunk(
   }
 )
 
+export const deletePost = createAsyncThunk(
+  "post/deletePost",
+  async ({ id, token }, { rejectWithValue }) => {
+    try {
+      const response = await axios.delete(`${BASE_URL}/delete/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      return response.data
+    } catch (error) {
+      console.log(error)
+      return rejectWithValue(error.response.data)
+    }
+  }
+)
+
 const postSlice = createSlice({
   name: "posts",
   initialState: {
     posts: [],
     isLoading: false,
     error: null,
+    message: "",
   },
   reducers: {
     incrementPage(state) {
@@ -117,6 +135,20 @@ const postSlice = createSlice({
             ? { ...post, likes: post.likes.filter((userId) => userId !== id) }
             : post
         )
+      })
+      .addCase(deletePost.pending, (state) => {
+        state.isLoading = true
+        state.error = null
+        state.message = ""
+      })
+      .addCase(deletePost.fulfilled, (state, action) => {
+        state.isLoading = false
+        state.message = action.payload
+      })
+      .addCase(deletePost.rejected, (state, action) => {
+        state.isLoading = false
+        state.error = action.payload ? action.payload : action.error.message
+        state.message = ""
       })
   },
 })

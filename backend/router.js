@@ -10,6 +10,7 @@ import {
 } from "./controller/userController.js"
 import {
   createPost,
+  deletePost,
   detailPost,
   getPost,
   getUserPosts,
@@ -34,6 +35,7 @@ route.post("/unlike/:id", verifyToken, unlike)
 route.post("/follow/:id", verifyToken, follow)
 route.post("/unfollow/:id", verifyToken, unfollow)
 route.get("/searchUser", searchUser)
+route.delete("/delete/:id", verifyToken, deletePost)
 
 route.post("/eddComment/:postId", verifyToken, addComment)
 

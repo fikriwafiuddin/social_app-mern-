@@ -2,6 +2,7 @@ import jwt from "jsonwebtoken"
 import User from "../models/userModel.js"
 import bcrypt from "bcrypt"
 import "dotenv/config"
+import validator from "validator"
 
 const generateToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: "30d" })
@@ -12,17 +13,17 @@ export const login = async (req, res) => {
   try {
     const user = await User.findOne({ email })
     if (!user) {
-      return res.status(401).json("User not found")
+      return res.status(404).json("User not found")
     }
 
     const comparePassword = await bcrypt.compare(password, user.password)
     if (!comparePassword) {
-      return res.status(401).json("Password is wrong")
+      return res.status(400).json("Password is wrong")
     }
     return res.status(200).json(generateToken(user._id))
   } catch (error) {
     console.error(error)
-    res.status(400).json("System error")
+    res.status(500).json("System error")
   }
 }
 
@@ -32,13 +33,16 @@ export const register = async (req, res) => {
     if (!username || !email || !password || !password2) {
       return res.status(400).json("Please add all fields")
     }
+    if (!validator.isEmail(email)) {
+      return res.status(400).json({ error: "Email is not valid" })
+    }
     const emailUser = await User.findOne({ email })
     if (emailUser) {
-      return res.status(401).json("User already exist!")
+      return res.status(400).json("User already exist!")
     }
     const isUsername = await User.findOne({ username })
     if (isUsername) {
-      return res.status(401).json("This username already exist")
+      return res.status(400).json("This username already exist")
     }
 
     if (password !== password2) {
@@ -50,7 +54,7 @@ export const register = async (req, res) => {
     return res.status(200).json(generateToken(newUser._id))
   } catch (error) {
     console.error(error)
-    res.status(400).json("System error")
+    res.status(500).json("System error")
   }
 }
 
@@ -60,7 +64,7 @@ export const getMe = async (req, res) => {
 
     return res.status(200).json(user)
   } catch (error) {
-    res.status(400).json("System error")
+    res.status(500).json("System error")
   }
 }
 
@@ -77,7 +81,7 @@ export const detaiUser = async (req, res) => {
     return res.status(200).json(user)
   } catch (error) {
     console.error(error)
-    res.status(400).json("System error")
+    res.status(500).json("System error")
   }
 }
 
