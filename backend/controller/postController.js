@@ -55,8 +55,8 @@ export const createPost = async (req, res) => {
     await Post.create({ content, author: user._id })
     return res.status(200).json("Success")
   } catch (error) {
-    console.error(error)
-    res.status(400).json("System error")
+    console.log(error)
+    res.status(500).json("System error")
   }
 }
 

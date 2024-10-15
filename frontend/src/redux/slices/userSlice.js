@@ -20,6 +20,18 @@ export const fetchMe = createAsyncThunk(
   }
 )
 
+export const searchUser = createAsyncThunk(
+  "user/searchUser",
+  async (query, { rejectWithValue }) => {
+    try {
+      const response = await axios.get(`${BASE_URL}/searchUser?q=${query}`)
+      return response.data
+    } catch (error) {
+      return rejectWithValue(error.response.data)
+    }
+  }
+)
+
 export const fetchUser = createAsyncThunk(
   "user/fetchUser",
   async (username, { rejectWithValue }) => {
@@ -79,8 +91,9 @@ const userSlice = createSlice({
   name: "user",
   initialState: {
     user: null,
+    users: [],
     me: null,
-    isLoading1: true,
+    isLoading: true,
     isLoading2: true,
     isBtnLoading: false,
     isLogin: false,
@@ -94,17 +107,29 @@ const userSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(fetchMe.pending, (state) => {
-        state.isLoading1 = true
+        state.isLoading = true
       })
       .addCase(fetchMe.fulfilled, (state, action) => {
         state.me = action.payload
-        state.isLoading1 = false
+        state.isLoading = false
         state.isLogin = true
       })
       .addCase(fetchMe.rejected, (state, action) => {
-        state.isLoading1 = false
+        state.isLoading = false
         state.error = action.payload
         state.isLogin = false
+      })
+      .addCase(searchUser.pending, (state) => {
+        state.isLoading = true
+      })
+      .addCase(searchUser.fulfilled, (state, action) => {
+        state.isLoading = false
+        state.users = action.payload
+      })
+      .addCase(searchUser.rejected, (state, action) => {
+        state.isLoading = false
+        state.error = action.payload ? action.payload : action.error.message
+        state.users = []
       })
       .addCase(fetchUser.pending, (state) => {
         state.isLoading2 = true

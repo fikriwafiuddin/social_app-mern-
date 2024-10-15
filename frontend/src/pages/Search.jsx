@@ -1,37 +1,20 @@
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import Navbar from "../components/Navbar"
-import axios from "axios"
-import { BASE_URL } from "../../BASE_URL"
+import { searchUser } from "../redux/slices/userSlice"
+import { useSelector } from "react-redux"
+import { useDispatch } from "react-redux"
 
 function Search() {
   const [query, setQuery] = useState("")
-  const [users, setUsers] = useState([])
-  const [loading, setLoading] = useState(false)
+  const { users, isLoading1 } = useSelector((state) => state.user)
+  const dispatch = useDispatch()
 
-  useEffect(() => {
-    const fetchUsers = async () => {
-      if (!query) {
-        setUsers([])
-        return
-      }
-
-      setLoading(true)
-      try {
-        const response = await axios.get(`${BASE_URL}/searchUser?q=${query}`)
-        setUsers(response.data)
-      } catch (error) {
-        console.error(error)
-      }
-      setLoading(false)
-    }
-
-    const delayDebounceFn = setTimeout(() => {
-      fetchUsers()
-    }, 300) // delay 300ms
-
-    return () => clearTimeout(delayDebounceFn)
-  }, [query])
-  console.log(users)
+  const handleChange = (e) => {
+    setQuery(e.target.value)
+    setTimeout(() => {
+      dispatch(searchUser(e.target.value))
+    }, 300)
+  }
 
   return (
     <>
@@ -44,14 +27,9 @@ function Search() {
             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full max-w-2xl mx-auto ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             placeholder="Search here"
             value={query}
-            onChange={(e) => setQuery(e.target.value)}
+            onChange={(e) => handleChange(e)}
           />
-          {/* <input
-            type="text"
-            
-            placeholder="Search users..."
-          />*/}
-          {loading && <p>Loading...</p>}
+          {isLoading1 && <p>Loading...</p>}
           <ul className="max-w-2xl mx-auto mt-6 gap-3 flex flex-col">
             {users.map((user) => (
               <li

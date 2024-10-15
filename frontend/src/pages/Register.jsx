@@ -16,6 +16,7 @@ function Register() {
     axios
       .post(`${BASE_URL}/register`, {
         email,
+        name,
         username,
         password,
         password2,

@@ -9,7 +9,7 @@ import Posts from "../components/Posts"
 
 function Me() {
   const dispatch = useDispatch()
-  const { me, isLoading1 } = useSelector((state) => state.user)
+  const { me, isLoading } = useSelector((state) => state.user)
   const {
     posts,
     error,
@@ -28,12 +28,12 @@ function Me() {
   }
 
   useEffect(() => {
-    if (!isLoading1) {
+    if (!isLoading) {
       dispatch(fetchUserPosts({ id: me._id }))
     }
-  }, [isLoading1])
+  }, [isLoading, dispatch, me])
 
-  if (isLoading1 || !me) {
+  if (isLoading || !me) {
     return <Loading />
   }
   if (error) return <h1>error</h1>
@@ -92,7 +92,7 @@ function Me() {
             </div>
           </div>
         </div>
-        {postLoading || isLoading1 ? (
+        {postLoading || isLoading ? (
           <Loading />
         ) : (
           <Posts posts={posts} me={me} />

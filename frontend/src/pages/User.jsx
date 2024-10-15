@@ -23,7 +23,7 @@ function User() {
 
   useEffect(() => {
     dispatch(fetchMe(token))
-  }, [dispatch])
+  }, [dispatch, token])
 
   useEffect(() => {
     dispatch(fetchUser(username))
@@ -33,7 +33,7 @@ function User() {
     if (user) {
       dispatch(fetchUserPosts({ id: user._id }))
     }
-  }, [isLoading2, dispatch])
+  }, [isLoading2, dispatch, user])
 
   if (isLoading2 || isLoading1) {
     return <Loading />

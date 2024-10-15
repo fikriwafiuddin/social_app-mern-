@@ -9,7 +9,7 @@ import { Comment, LikeFill, LikeOutline } from "../atoms/svg"
 
 function Home() {
   const dispatch = useDispatch()
-  const { posts, isLoading1 } = useSelector((state) => state.posts)
+  const { posts, isLoading } = useSelector((state) => state.posts)
   const {
     me,
     isLoading: userLoading,
@@ -57,7 +57,7 @@ function Home() {
     localStorage.removeItem("user")
     navigate("/login")
   }
-  if (isLoading1 || !me) return <Loading />
+  if (isLoading || !me) return <Loading />
 
   return (
     <>

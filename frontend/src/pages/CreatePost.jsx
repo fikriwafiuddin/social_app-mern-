@@ -3,6 +3,7 @@ import Navbar from "../components/Navbar"
 import axios from "axios"
 import { useNavigate } from "react-router-dom"
 import Loading from "../components/Loading"
+import { BASE_URL } from "../../BASE_URL"
 
 function CreatePost() {
   const [content, setContent] = useState("")
@@ -17,14 +18,10 @@ function CreatePost() {
       Authorization: `Bearer ${token}`,
     }
     try {
-      await axios.post(
-        "http://localhost:3000/createPost",
-        { content },
-        { headers }
-      )
+      await axios.post(`${BASE_URL}/createPost`, { content }, { headers })
       navigate("/")
     } catch (error) {
-      console.log(error.response.data)
+      console.log(error)
     } finally {
       setIsLoading(false)
     }
