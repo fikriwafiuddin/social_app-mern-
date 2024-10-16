@@ -9,7 +9,7 @@ const port = process.env.PORT
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
-app.use(cors({ origin: "https://socialapp-five.vercel.app/" }))
+app.use(cors({ origin: process.env.FRONTEND }))
 connectDb()
 app.use(route)
 
