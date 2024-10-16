@@ -12,6 +12,7 @@
   "dependencies": {
     "@reduxjs/toolkit": "^2.2.7",
     "axios": "^1.7.2",
+    "dotenv": "^16.4.5",
     "flowbite": "^2.4.1",
     "flowbite-react": "^0.10.1",
     "install": "^0.13.0",
