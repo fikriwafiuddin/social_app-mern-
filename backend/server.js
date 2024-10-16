@@ -8,7 +8,12 @@ const app = express()
 const port = process.env.PORT
 
 app.use(express.json())
-app.use(cors("https://social-app-lac.vercel.app"))
+const corsOptions = {
+  origin: ["https://social-app-lac.vercel.app"],
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+}
+app.use(cors(corsOptions))
 connectDb()
 app.use(route)
 
