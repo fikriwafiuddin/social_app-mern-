@@ -13,7 +13,7 @@ const corsOptions = {
   methods: ["GET", "POST", "PUT", "DELETE"],
   allowedHeaders: ["Content-Type", "Authorization"],
 }
-app.use(cors(corsOptions))
+app.use(cors())
 connectDb()
 app.use(route)
 
